@@ -2,6 +2,7 @@ package cn.edu.gdmec.android.androidapplicationmarket;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -53,15 +54,37 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //将list_item布局转换成一个View对象
-            View view=View.inflate ( MainActivity.this, R.layout.list_item, null );
+            /*View view=View.inflate ( MainActivity.this, R.layout.list_item, null );
             //找到条目中控件
             ImageView imageView=(ImageView) view.findViewById ( R.id.item_image );
 
             TextView mTextView=(TextView) view.findViewById ( R.id.item_tv );
 
             mTextView.setText ( names[position] );
-            imageView.setBackgroundResource ( icons[position] );
-            return view;
+            imageView.setBackgroundResource ( icons[position] );*/
+
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView=LayoutInflater.from ( getApplicationContext () ).inflate ( R.layout.list_item, null );
+                holder=new ViewHolder ();
+
+                holder.mTextView=( TextView ) convertView.findViewById ( R.id.item_tv );
+                holder.imageView=( ImageView ) convertView.findViewById ( R.id.item_image );
+                convertView.setTag ( holder );
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag ();
+
+            }
+            holder.mTextView.setText ( names[position] );
+            holder.imageView.setBackgroundResource ( icons[position] );
+            return convertView;
+
         }
+    }
+    class ViewHolder{
+        TextView mTextView;
+        ImageView imageView;
+
     }
 }
